@@ -1,0 +1,177 @@
+---
+layout: post
+title:  搭建个人博客过程记录
+date:   2022-03-14 16:10:01 +0800
+permalink: /blog-build
+categories: web
+---
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>2022-03-14-搭建个人博客过程记录</title>
+</head>
+<body><h3 id='前言'>前言</h3>
+<p>	记录基于GitHub Pages+Jekyll搭建个人博客的过程。</p>
+<p>	<a href='https://pages.github.com/'>GitHub Pages</a>是一个搭建静态网站的工具，通过Jekyll网站生成器搭建静态博客。</p>
+<p>	<a href='https://jekyllrb.com/'>Jekyll</a>是一个静态博客网站生成器，可以把markdown/html文件转化成网页。</p>
+<p>	过程分为配置环境、新建博客、选择主题、修改主题、绑定域名五个步骤。</p>
+<p>	所需基础：会用Git和markdown；简单了解html+css+js（如果不修改主题也可以不需要）；浏览<a href='https://jekyllcn.com/docs/home/'>Jekyll文档</a>。</p>
+<p>	本网站的仓库：<a href='https://github.com/timp2100/timp2100.github.io'>timp2100/timp2100.github.io: My Blog</a>。</p>
+<h3 id='配置环境'>配置环境</h3>
+<h5 id='安装ruby'>安装Ruby</h5>
+<p>	Jekyll是Ruby语言的一个包，可类比于Python中numpy、pygame、PyQt这类的东西，所以要运行Jekyll就要先下载Ruby，<a href='https://rubyinstaller.org/downloads/'>Ruby下载地址</a>，选择官网推荐的最新版ruby+devkit，一路默认安装。</p>
+<p>	安装后检查：ruby -v；gem -v。</p>
+<p>	网上部分过去的文章中说需要单独下载RubyGems，但Ruby从1.9版本开始集成了RubyGems，所以下载新版Ruby已不再需要这一步（写这篇文章时最新版本是3.1）；gem是Ruby的包管理器，可类比于Python中的pip。</p>
+<h5 id='安装jekyll'>安装Jekyll</h5>
+<p>	执行<code>gem install jekyll</code>。</p>
+<p>	安装后检查：jekyll -v。</p>
+<h3 id='新建博客'>新建博客</h3>
+<h5 id='默认页面'>默认页面</h5>
+<pre><code class='language-shell' lang='shell'>jekyll new testblog
+cd testblog
+jekyll serve
+</code></pre>
+<p>	如果报webrick相关错误，则运行<code>bundle add webrick</code>，因为Ruby从3.0开始不再绑定webrick。</p>
+<p>	在浏览器访问：<a href='http://localhost:4000/' target='_blank' class='url'>http://localhost:4000/</a>，即可看到Jekyll的默认页面。</p>
+<h5 id='编辑内容'>编辑内容</h5>
+<p>	编辑_posts文件夹里的md/html文件，命名格式：yyyy-mm-dd-name.md/html。</p>
+<h5 id='上传仓库'>上传仓库</h5>
+<p>	在github上新建一个名为your-username.github.io的仓库，将整个testblog文件夹的内容上传。然后在仓库的setting-pages里可以看到生成网页的网址(https:// + your-username.github.io)，点击这个网址即可看到博客的页面。</p>
+<h5 id='其他'>其他</h5>
+<p>	gem的一些指令：版本更新：<code>gem update</code>；清除旧版：<code>gem cleanup</code>。</p>
+<h3 id='选择主题'>选择主题</h3>
+<p>	在<a href='http://jekyllthemes.org/'>Jekyll主题官网</a>选一个喜欢的主题下载，<code>jekyll serve</code>，如果提示缺少部分包则运行<code>bundle install</code>安装，这个命令会根据Gemfile.lock和Gemfile安装对应版本的Gem。如果报bundle exec相关错误则用<code>bundle exec jekyll serve</code>。</p>
+<p>	我这里选择了极简风格的<a href='http://jekyllthemes.org/themes/monos/'>Monos</a>主题。</p>
+<h3 id='修改主题'>修改主题</h3>
+<p>	记录修改Monos主题的过程。</p>
+<h5 id='修改个人信息和描述'>修改个人信息和描述</h5>
+<p>	在_config.yml中替换自己的个人信息，添加网站描述，同时我注释了github_username这一行。网站描述的内容如下（意为在新标签页打开的一个指向Monos主题仓库地址的超链接）：</p>
+<pre><code class='language-html' lang='html'>Theme: &lt;a href=&quot;https://github.com/ejjoo/jekyll-theme-monos&quot; target=&quot;_blank&quot;&gt;Monos&lt;/a&gt;
+</code></pre>
+<p>	主题会把网站描述复制到_include/sidebar.html中的这个位置：</p>
+<pre><code class='language-html' lang='html'>&lt;p class=&quot;lead&quot;&gt;{{ site.description }}&lt;/p&gt;
+</code></pre>
+<h5 id='添加faviconico'>添加favicon.ico</h5>
+<p>	就是浏览器标签页左上角显示的那个图标，在_include/head.html中添加（替换图片地址）：</p>
+<pre><code class='language-html' lang='html'>&lt;link rel=&quot;shortcut icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://timp2100.cn/images/favicon.ico&quot;&gt;
+</code></pre>
+<p>	图标显示的尺寸是16*16，虽然浏览器会自己缩放，但一般不建议图片太大，我这里是32*32。</p>
+<h5 id='添加logo'>添加logo</h5>
+<p>	把网页左上角的内容换成了logo（免费logo设计网站：<a href='https://www.canva.com/zh_cn/'>Canva</a>），在_include/sidebar.html：</p>
+<pre><code class='language-html' lang='html'>&lt;a href=&quot;/about/&quot;&gt;&lt;img src=&quot;https://timp2100.cn/images/logo.png&quot;/&gt;&lt;/a&gt;
+</code></pre>
+<h5 id='jekyll在新标签页打开'>Jekyll在新标签页打开</h5>
+<p>	把侧边栏页脚的Jekyll链接设为了在新标签页打开，在_include/sidebar.html：</p>
+<pre><code class='language-html' lang='html'>&lt;p&gt;Powered by &lt;a href=&quot;https://github.com/jekyll/jekyll&quot; target=&quot;_blank&quot;&gt;Jekyll&lt;/a&gt;&lt;/p&gt;
+</code></pre>
+<h5 id='修改侧边栏头部的字体和链接颜色'>修改侧边栏头部的字体和链接颜色</h5>
+<p>	通过css的类选择器设置，在public/css/style.css：</p>
+<pre><code class='language-css' lang='css'>.sidebar-header {
+	font-size: 0.75em;
+	font-weight: lighter;
+	font-family: &quot;Roboto&quot;;
+	line-height: 1.5;
+}
+
+.sidebar-header a {
+	color: #ccc;
+}
+</code></pre>
+<h5 id='设置中文页面'>设置中文页面</h5>
+<p>	在浏览器打开网页时提示是否翻译，因为主题设置的默认网页语言是英语（在_include/default.html中）。</p>
+<p>	在_config.yml中加一行<code>lang: zh</code>即可。</p>
+<h5 id='访问加速'>访问加速</h5>
+<p>	在浏览器打开网页时发现有时候加载比较慢，浏览器左下角提示在等待fonts.gstatic.com，发现是用了谷歌字体的原因，把public/css/style.css中前两行的链接改成Google字体中国站<a href='https://fonts.font.im' target='_blank' class='url'>https://fonts.font.im</a>。</p>
+<h5 id='删除未用到的文件'>删除未用到的文件</h5>
+<p>	发现public/syntax文件夹下的内容只有monokai.css被用到，提出monokai.css，删除syntax文件夹，在public/css/style.css和_include/default.html中做出相应的修改；当然，也可以用其他的样式，在style.css、default.html和_config.yml给出路径名称即可。</p>
+<p>	删去了我没有用到的_include文件夹下social.html、google-analytics.html、header.html，footer.html。</p>
+<h5 id='为发布的文件添加头信息'>为发布的文件添加头信息</h5>
+<p>	编辑_posts文件夹里的md/html文件，在文件最开始加上：</p>
+<pre><code>---
+layout: post
+title:  your-title
+date:   yyyy-mm-dd hh:mm:ss +0800
+permalink: your-permalink
+categories: your-categories
+---
+</code></pre>
+<p>	头信息中包含布局、标题、日期、固定链接、分类等内容。</p>
+<h3 id='绑定域名'>绑定域名</h3>
+<p>	GitHub Pages支持绑定自定义的域名，在仓库中新建一个名为CNAME的文件，内容为自定义的域名，我这里是timp2100.cn，在setting-pages里勾选Enforce HTTPS。</p>
+<p>	关于域名：域名需要购买、实名认证、ICP备案、和公安备案，这些操作可在华为/阿里/腾讯等处一条龙完成（公安备案需要去公安备案的网站上），这些大的商家一般会对整个过程给出详细的指导。整个过程因一般可以在20~30天内完成。</p>
+<p>	在购买域名的地方添加域名解析如下：</p>
+<figure><table>
+<thead>
+<tr><th style='text-align:center;' >主机</th><th style='text-align:center;' >类型</th><th style='text-align:center;' >记录值</th></tr></thead>
+<tbody><tr><td style='text-align:center;' >@</td><td style='text-align:center;' >A</td><td style='text-align:center;' >185.199.108.153</td></tr><tr><td style='text-align:center;' >@</td><td style='text-align:center;' >A</td><td style='text-align:center;' >185.199.109.153</td></tr><tr><td style='text-align:center;' >www</td><td style='text-align:center;' >CNAME</td><td style='text-align:center;' >your-username.github.io</td></tr></tbody>
+</table></figure>
+<p>	备案后需要根据ICP备案和公安备案的要求在网站底部添加备案信息。</p>
+<p>	在_include文件夹下新建一个footer.html存放页脚的备案信息和一些其他内容，footer.html内容如下（替换自己的信息）：</p>
+<pre><code class='language-html' lang='html'>&lt;div class=&quot;site-footer&quot;&gt;
+  &lt;div class=&quot;site-footer-connect&quot;&gt;
+    {%- if site.email -%}
+    &lt;a class=&quot;u-email&quot; href=&quot;mailto:{{ site.email }}&quot;&gt;&lt;img src=&quot;https://timp2100.cn/images/mail.png&quot;/&gt;&lt;/a&gt;
+    {%- endif -%}
+  &lt;/div&gt;
+  &lt;div class=&quot;site-footer-record-ICP&quot;&gt;
+    &lt;a target=&quot;_blank&quot; href=&quot;http://beian.miit.gov.cn/&quot;&gt;ICP备案号&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;site-footer-record-PS&quot;&gt;
+    &lt;a target=&quot;_blank&quot; href=&quot;http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=公安备案号&quot;&gt;
+      &lt;img src=&quot;https://timp2100.cn/images/公安备案图标.png&quot;/&gt;公安备案号&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>	在上述footer.html中除了备案信息还添加了一个邮箱的链接，邮箱的图标可以自己下载一个免费图片然后抠图、调整大小。</p>
+<p>	在_include/default.html中<code>&lt;/body&gt;</code>之后添加<code>&lt;footer&gt;&lt;/footer&gt;</code>标签对并<code>include footer.html</code>以显示页脚。</p>
+<p>	修改public/css/style.css，删去这部分以解除它对所有footer的边距和字体控制：</p>
+<pre><code class='language-css' lang='css'>footer {
+  padding-top: 15px;
+  font-family: &#39;Ubuntu&#39;;
+}
+</code></pre>
+<p>	加入以下内容以设置页脚的样式：</p>
+<pre><code class='language-css' lang='css'>.site-footer {
+	display: flex;
+	flex-direction: column;
+	flex: 0 0 auto;
+	padding-top: 5px;
+	background-color: #222;
+	color: #fff;
+
+	font-size: 10px;
+	font-weight: lighter;
+	font-family: &quot;Roboto&quot;;
+	line-height: 1.5;
+}
+
+.site-footer a {
+	color: #ccc;
+}
+
+.site-footer-connect {
+	margin: 0 auto;
+}
+
+.site-footer-record-ICP {
+	margin: 0 auto;
+}
+
+.site-footer-record-PS {
+	margin: 0 auto;
+}
+
+.site-footer-connect img {
+	width: 20px;
+	height: 20px;
+}
+
+.site-footer-record-PS img {
+	width: 12px;
+	height: 12px;
+}
+</code></pre>
+<p>	至此，个人博客基本就搭建完成了。</p>
+</body>
+</html>
