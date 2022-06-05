@@ -345,42 +345,11 @@ header.home {
 	}
 }
 
-.site-footer {
-	display: flex;
-	flex-direction: column;
-	flex: 0 0 auto;
-	padding-top: 5px;
-	background-color: #222;
-	color: #fff;
-
-	font-size: 10px;
-	font-weight: lighter;
-	font-family: "Roboto";
-	line-height: 1.5;
-}
-
-.site-footer a {
-	color: #ccc;
-}
-
-.site-footer-connect {
+.site-connect {
 	margin: 0 auto;
 }
 
-.site-footer-record-ICP {
-	margin: 0 auto;
-}
-
-.site-footer-record-PS {
-	margin: 0 auto;
-}
-
-.site-footer-connect img {
+.site-connect img {
 	width: 20px;
 	height: 20px;
-}
-
-.site-footer-record-PS img {
-	width: 12px;
-	height: 12px;
 }

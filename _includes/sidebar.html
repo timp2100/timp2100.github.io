@@ -3,6 +3,11 @@
 		<a href="/about/"><img src="https://timp2100.cn/images/logo.png"/></a>
 	</div>
 	<p class="lead">{{ site.description }}</p>
+	<div class="site-connect">
+		{%- if site.email -%}
+		<a class="u-email" href="mailto:{{ site.email }}"><img src="https://timp2100.cn/images/mail.png"/></a>
+		{%- endif -%}
+	</div>
 	{%- if social.github -%}
 		<a rel="me" href="https://github.com/{{ social.github | cgi_escape | escape }}" title="{{ social.github | escape }}">
 			<svg class="svg-icon grey">
