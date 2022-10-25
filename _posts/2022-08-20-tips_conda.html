@@ -1,0 +1,31 @@
+---
+layout: post
+title:  tips conda
+date:   2022-08-20 18:01:50 +0800
+permalink: /tips_conda
+categories: tips
+---
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>2022-08-20-tips_conda</title>
+</head>
+<body><p>conda换源</p>
+<ol start='' >
+<li><p>生成配置文件</p>
+<p>	conda config --set show_channel_urls yes</p>
+</li>
+<li><p>gedit ~/.condarc</p>
+<p>	内容如下：</p>
+<p>channels:</p>
+<p>  - <a href='https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/' target='_blank' class='url'>https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/</a></p>
+<p>  - <a href='https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/' target='_blank' class='url'>https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</a></p>
+<p>  - <a href='https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/' target='_blank' class='url'>https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/</a></p>
+<p>  - <a href='https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/' target='_blank' class='url'>https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/</a></p>
+<p>ssl_verify: true</p>
+</li>
+
+</ol>
+</body>
+</html>

@@ -1,0 +1,91 @@
+---
+layout: post
+title:  tips nvidia
+date:   2022-08-20 18:01:53 +0800
+permalink: /tips_nvidia
+categories: tips
+---
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>2022-08-20-tips_nvidia</title>
+</head>
+<body><ol start='' >
+<li><p>禁止系统内核更新(uname.txt)</p>
+</li>
+<li><p>在软件和更新的附加驱动里选择nvidia-driver-470(tested)</p>
+</li>
+<li><p>在关机前运行sudo prime-select intel（切换集显，方便开机，如果忘了就需要进ubuntu高级选项、recovery、root）</p>
+</li>
+<li><p>开机后运行</p>
+<ul>
+<li>sudo prime-select nvidia（切换独显）</li>
+<li>sudo modprobe nvidia（挂载独显驱动）</li>
+<li>nvidia-smi（显示独显信息）</li>
+
+</ul>
+</li>
+<li><p>安装CUDA</p>
+<ul>
+<li>下载地址：<a href='https://developer.nvidia.com/cuda-toolkit-archive' target='_blank' class='url'>https://developer.nvidia.com/cuda-toolkit-archive</a></li>
+<li>安装时用空格取消安装驱动（因为已经安装过了）</li>
+<li>查看版本：nvcc -V</li>
+
+</ul>
+</li>
+<li><p>设置环境变量</p>
+<ul>
+<li>export PATH=/usr/local/cuda/bin:$PATH</li>
+<li>export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH</li>
+
+</ul>
+</li>
+<li><p>安装cuDNN</p>
+<ul>
+<li>下载地址：<a href='https://developer.nvidia.com/rdp/cudnn-archive' target='_blank' class='url'>https://developer.nvidia.com/rdp/cudnn-archive</a></li>
+<li>先后运行deb、dev.deb、samples.deb</li>
+
+</ul>
+</li>
+<li><p>安装anaconda</p>
+<ul>
+<li><a href='https://repo.anaconda.com/archive/' target='_blank' class='url'>https://repo.anaconda.com/archive/</a></li>
+<li>(更新时用：conda update --all conda upgrade --all 这两条命令完全一致，没有区别)
+打开：anaconda-navigator</li>
+
+</ul>
+</li>
+<li><p>安装pytorch</p>
+<ul>
+<li>conda create -n conda_pytorch</li>
+<li>conda activate conda_pytorch</li>
+<li>conda install pytorch<mark>1.11.0 torchvision</mark>0.12.0 torchaudio==0.11.0</li>
+<li>cudatoolkit=11.3 -c pytorch</li>
+
+</ul>
+<p>验证：在conda_pytorch环境下:</p>
+<pre><code class='language-python' lang='python'>import torch
+torch.__version__
+torch.version.cuda
+from torch.backends import cudnn
+cudnn.is_available()
+torch.backends.cudnn.version()
+</code></pre>
+<p>实测不提前装cuda和cudnn，只装pytorch上述指令的输出也正常（必须启用独显）</p>
+</li>
+<li><p>安装terminator</p>
+<ul>
+<li>sudo apt install terminator</li>
+<li>Ctrl+Shift+T	打开终端</li>
+<li>Ctrl+Shift+E	水平分割终端</li>
+<li>Ctrl+Shift+O	垂直分割终端</li>
+<li>Ctrl+Shift+W	关闭当前终端</li>
+<li>Ctrl+Shift+Q	关闭所有终端</li>
+
+</ul>
+</li>
+
+</ol>
+</body>
+</html>

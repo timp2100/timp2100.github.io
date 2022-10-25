@@ -1,0 +1,37 @@
+---
+layout: post
+title:  hardware 充电
+date:   2022-09-09 00:12:46 +0800
+permalink: /hardware_charge
+categories: hardware
+---
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>2022-09-09-hardware_charge</title>
+</head>
+<body><h2 id='功能'>功能</h2>
+<ul>
+<li>实现三节串联锂电池充电功能。</li>
+<li>显示充电状态。</li>
+<li>具备过充和过放保护、平衡各节电池电压的功能。</li>
+
+</ul>
+<h2 id='基本特性'>基本特性</h2>
+<ul>
+<li>15mm*50mm双层板。</li>
+<li>电源输入为TypeC接口，5V输入（普通充电器为固定5V输出，快充充电器的默认输出为5V，所以可以兼容）。</li>
+<li>充电电流最高为1A，充电芯片SLM6803内部集成了MOS，类似的充电芯片还有：SY6912，如需更大的充电电流则可以考虑用CN3303/CN3305芯片实现；如需支持快充则可以考虑用CH224K等快充协议芯片，例如使用快充充电器时请求12V电压（如果该快充充电器不支持12V则会自动降到下一档，如10V/9V，如果是普通充电器，则输出依然是5V），则收到的电压为5~12V，可以用FP6296XR-G1等芯片先统一升压到13V（或其他合适的电压），然后用13V给CN3703/CN3765/CN3703/CN3705/CN3722/CN3765/CN3795等充电芯片供电实现充电。</li>
+<li>红灯亮表示充电，绿灯亮表示充满，红灯闪烁表示充电异常。</li>
+<li>电池保护芯片为FM8254AAV，带有防止过充、过放、平衡电池电压的功能。</li>
+
+</ul>
+<h2 id='原理图'>原理图</h2>
+<p><img src="https://timp2100.cn/images/hardware/charge/charge-sch.png" referrerpolicy="no-referrer" alt="charge-sch"></p>
+<h2 id='外观'>外观</h2>
+<p><img src="https://timp2100.cn/images/hardware/charge/charge-top.png" referrerpolicy="no-referrer" alt="charge-top"></p>
+<h2 id='源文件'>源文件</h2>
+<p><a href='https://github.com/timp2100/hardware'>原理图及PCB文件地址</a></p>
+</body>
+</html>

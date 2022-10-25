@@ -1,0 +1,69 @@
+---
+layout: post
+title:  tips git
+date:   2022-01-09 18:01:51 +0800
+permalink: /tips_git
+categories: tips
+---
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>2022-01-09-tips_git</title>
+</head>
+<body><ol start='' >
+<li>配置	</li>
+
+</ol>
+<pre><code class='language-shell' lang='shell'>git config --list
+git config --global user.name timp2100
+git config --global user.email timp2100@outlook.com
+
+git config --global user.name
+git config --global user.email
+
+git config --global --unset user.name
+git config --global --unset user.email
+</code></pre>
+<ol start='2' >
+<li><p>分支、版本</p>
+<ul>
+<li>查看所在分支：git branch</li>
+<li>查看当前版本：git log</li>
+<li>git reset --hard + code/HEAR^^（回退2个版本）/HEAD~2（回退3个版本）</li>
+
+</ul>
+</li>
+<li><p>配置SSH公钥</p>
+<ul>
+<li><p>报错：</p>
+<pre><code>git@gitee.com: Permission denied (publickey).
+fatal: 无法读取远程仓库。
+请确认您有正确的访问权限并且仓库存在。
+</code></pre>
+</li>
+<li><p>解决方案：</p>
+<pre><code>ssh-keygen -t rsa -C &quot;timp2100@outlook.com&quot;
+ssh -v git@gitee.com
+ssh-agent -s
+ssh-add ~/.ssh/id_rsa
+复制./ssh/id_rsa.pub内容到gitee账户的设置SSH公钥里，名称任选
+</code></pre>
+</li>
+
+</ul>
+</li>
+<li><p>子模块（url、dir、版本）</p>
+<ul>
+<li>递归克隆：git clone --recursive</li>
+<li>添加子模块：git submodule add url dir</li>
+<li>同步子模块（既定版本）：git submodule update --init</li>
+<li>同步子模块（最新版本）：git submodule update --remote</li>
+<li>删除子模块：删除.gitmodules文件、主仓库config中关于submodule的配置信息、子仓库的目录 git rm --cached url</li>
+
+</ul>
+</li>
+
+</ol>
+</body>
+</html>

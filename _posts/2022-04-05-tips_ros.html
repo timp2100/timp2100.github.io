@@ -1,0 +1,101 @@
+---
+layout: post
+title:  tips ros
+date:   2022-04-05 18:01:57 +0800
+permalink: /tips_ros
+categories: tips
+---
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>2022-04-05-tips_ros</title>
+</head>
+<body><ol>
+<li>Ubuntu换源（通过软件和更新换源更简单）</li>
+
+</ol>
+<ul>
+<li>备份文件：sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak</li>
+<li>修改文件：sudo vi /etc/apt/sources.list，内容参考：<a href='https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/' target='_blank' class='url'>https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/</a>
+以Ubuntu 18.04 LTS为例：</li>
+
+</ul>
+<pre><code class='language-shell' lang='shell'># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse
+
+# 预发布软件源，不建议启用
+# deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse
+</code></pre>
+<ol start='2' >
+<li><p>添加ROS软件源</p>
+<pre><code class='language-shell' lang='shell'>sudo sh -c &#39;. /etc/lsb-release &amp;&amp; echo &quot;deb https://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ $DISTRIB_CODENAME main&quot; &gt;&gt; /etc/apt/sources.list.d/ros-latest.list&#39;
+</code></pre>
+</li>
+
+</ol>
+<ol start='3' >
+<li><p>添加密钥</p>
+<pre><code class='language-shell' lang='shell'>sudo apt-key adv --keyserver &#39;hkp://keyserver.ubuntu.com:80&#39; --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+</code></pre>
+</li>
+
+</ol>
+<ol start='4' >
+<li><p>更新软件源</p>
+<pre><code class='language-shell' lang='shell'>sudo apt update//相比于apt-get而言，apt是更新、更为推崇的命令，尽量用这个
+</code></pre>
+</li>
+
+</ol>
+<ol start='5' >
+<li>安装ROS</li>
+
+</ol>
+<pre><code class='language-shell' lang='shell'>sudo apt install ros-melodic-desktop-full
+</code></pre>
+<ol start='6' >
+<li>初始化rosdepc</li>
+
+</ol>
+<pre><code class='language-shell' lang='shell'>sudo apt install python3-pip
+sudo pip3 install rosdepc
+sudo rosdepc init
+rosdepc update
+</code></pre>
+<ol start='7' >
+<li><p>添加环境变量</p>
+<pre><code class='language-shell' lang='shell'>echo &quot;source /opt/ros/melodic/setup.bash&quot; &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre>
+</li>
+
+</ol>
+<ol start='8' >
+<li><p>安装rosinstall</p>
+<pre><code class='language-shell' lang='shell'>sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential
+rosinstall也是ROS中的一个常用工具，可以下载和安装ROS中的功能包程序。
+</code></pre>
+</li>
+
+</ol>
+<ol start='9' >
+<li><p>验证</p>
+<pre><code class='language-shell' lang='shell'>roscore
+rosrun turtlesim turtlesim_node
+rosrun turtlesim turtle_teleop_key
+</code></pre>
+<p>&nbsp;</p>
+</li>
+
+</ol>
+</body>
+</html>

@@ -1,0 +1,118 @@
+---
+layout: post
+title:  tips rc.local
+date:   2022-04-05 18:01:55 +0800
+permalink: /tips_rclocal
+categories: tips
+---
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>2022-04-05-tips_rclocal</title>
+</head>
+<body><p>！！！不要尝试在rc.local里启动显卡，容易让ubuntu崩溃，可以建一个nvidia.sh，在开机后手动开启</p>
+<pre><code class='language-shell' lang='shell'>sudo prime-select nvidia
+sudo modprobe nvidia
+</code></pre>
+<p>新版linux无rc.local，设置方法：</p>
+<ol>
+<li>设置rc-local.service</li>
+
+</ol>
+<pre><code class='language-shell' lang='shell'>sudo gedit /etc/systemd/system/rc-local.service
+sudo chmod 777 /etc/systemd/system/rc-local.service
+</code></pre>
+<p>	内容如下：</p>
+<pre><code class='language-shell' lang='shell'>[Unit]
+Description=/etc/rc.local Compatibility
+Documentation=man:systemd-rc-local-generator(8)
+ConditionFileIsExecutable=/etc/rc.local
+After=network.target
+[Service]
+Type=forking
+ExecStart=/etc/rc.local start
+TimeoutSec=0
+RemainAfterExit=yes
+GuessMainPID=no
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<ol start='2' >
+<li>重新加载systemd配置并激活rc-local.service</li>
+
+</ol>
+<pre><code class='language-shell' lang='shell'>sudo systemctl daemon-reload
+</code></pre>
+<p>	</p>
+<ol start='3' >
+<li><p>添加启动服务</p>
+<pre><code class='language-shell' lang='shell'>gedit /etc/rc.local
+内容如下：（第一行不能省略，否则会报错）
+#!/bin/sh -e
+sudo bash /etc/rc-local.sh
+exit 0
+</code></pre>
+</li>
+<li><p>给脚本赋予执行权限</p>
+<pre><code class='language-shell' lang='shell'>sudo chmod 777 /etc/rc.local
+sudo chmod 777 /etc/rc-local.sh
+rc-local.sh内容如下：
+python3 /home/timp2100/rc-local.py &gt; /home/timp2100/rc-local.log
+</code></pre>
+</li>
+
+</ol>
+<p>关机自动执行的任务同理：</p>
+<ol>
+<li><p>设置shutdown.service</p>
+<pre><code class='language-shell' lang='shell'>sudo gedit etc/systemd/system/shutdown.service
+sudo chmod 777 /etc/systemd/system/shutdown.service
+内容如下：
+[Unit]
+Description=Run command at shutdown
+Requires=network.target
+DefaultDependencies=no
+Conflicts=reboot.target
+Before=shutdown.target
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/true
+#path
+ExecStop=/bin/sh /etc/shutdown.sh
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p>&nbsp;</p>
+</li>
+<li><p>创建要执行的脚本</p>
+<pre><code class='language-shell' lang='shell'>sudo touch /etc/shutdown.sh
+sudo chmod 777 /etc/shutdown.sh
+内容如下：
+sudo prime-select intel
+exit 0
+</code></pre>
+</li>
+
+</ol>
+<ol start='3' >
+<li><p>重新加载systemd配置并激活shutdown.service</p>
+<pre><code class='language-shell' lang='shell'>sudo systemctl daemon-reload
+sudo systemctl enable shutdown.service
+</code></pre>
+</li>
+
+</ol>
+<ol start='4' >
+<li>附systemctl服务管理器指令</li>
+
+</ol>
+<pre><code class='language-shell' lang='shell'>sudo systemctl enable xxx.service
+sudo systemctl start xxx.service
+sudo systemctl restart xxx.service
+sudo systemctl status xxx.service
+</code></pre>
+<p>&nbsp;</p>
+</body>
+</html>

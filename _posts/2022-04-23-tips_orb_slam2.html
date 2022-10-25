@@ -1,0 +1,162 @@
+---
+layout: post
+title:  tips orb_slam2
+date:   2022-04-23 18:01:54 +0800
+permalink: /tips_orb_slam2
+categories: tips
+---
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>2022-04-23-tips_orb_slam2</title>
+</head>
+<body><ol start='' >
+<li><p>安装前准备</p>
+<pre><code class='language-shell' lang='shell'>vim cmake git gcc g++ libeigen3-dev(eigen)
+</code></pre>
+</li>
+<li><p>安装Pangolin</p>
+<ul>
+<li>依赖项：</li>
+
+</ul>
+<pre><code class='language-shell' lang='shell'>sudo apt install libglew-dev
+sudo apt install libboost-dev libboost-thread-dev libboost-filesystem-dev
+sudo apt install libpython2.7-dev
+</code></pre>
+<ul>
+<li>流程</li>
+
+</ul>
+<pre><code class='language-shell' lang='shell'>git clone
+cd Pangolin
+git reset --hard v0.8(改为v0.5)
+mkdir build
+cd build
+cmake ..
+make -j12
+sudo make install
+</code></pre>
+</li>
+<li><p>安装OpenCV</p>
+<ul>
+<li>依赖项：</li>
+
+</ul>
+<pre><code class='language-shell' lang='shell'>sudo apt install build-essential libgtk2.0-dev libjpeg-dev libopenexr-dev libtbb-dev
+sudo apt install libavcodec-dev libavformat-dev libswscale-dev libtiff5-dev libvtk6-dev
+sudo add-apt-repository &quot;deb http://security.ubuntu.com/ubuntu xenial-security main&quot;
+sudo apt update
+sudo apt install libjasper1 libjasper-dev
+</code></pre>
+<ul>
+<li>流程</li>
+
+</ul>
+<pre><code class='language-shell' lang='shell'>cd opencv-3.4.5
+mkdir build
+cd build
+cmake ..
+make -j12
+sudo make install
+</code></pre>
+<ul>
+<li>配置环境变量</li>
+
+</ul>
+<pre><code class='language-shell' lang='shell'>执行 sudo vim /etc/ld.so.conf.d/opencv.conf
+添加 /usr/local/lib
+执行 sudo ldconfig
+</code></pre>
+<ul>
+<li>执行</li>
+
+</ul>
+<pre><code class='language-shell' lang='shell'>sudo vim /etc/bash.bashrc
+</code></pre>
+<ul>
+<li>添加</li>
+
+</ul>
+<pre><code class='language-shell' lang='shell'>PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+export PKG_CONFIG_PATH
+</code></pre>
+<ul>
+<li>执行</li>
+
+</ul>
+<pre><code class='language-shell' lang='shell'>source /etc/bash.bashrc
+sudo updatedb
+</code></pre>
+<ul>
+<li>测试</li>
+
+</ul>
+<pre><code class='language-shell' lang='shell'>cd opencv-3.4.5/samples/cpp/example_cmake
+cmake .
+make
+./opencv_example
+</code></pre>
+</li>
+<li><p>安装ORB_SLAM2</p>
+<pre><code class='language-shell' lang='shell'>git clone
+cd ORB_SLAM2
+sudo chmod +x build.sh
+./build.sh
+</code></pre>
+<p>	如果报usleep相关的错误则在对应的/src/.cc文件中加入#include &lt;unistd.h&gt;</p>
+</li>
+<li><p>报错Pangolin could not be found because dependency Eigen3 could not be found.</p>
+<ul>
+<li>降低Pangolin版本</li>
+<li>在Pangolin的build目录下sudo make uninstall</li>
+<li>sudo rm -R /usr/local/include/pangolin</li>
+<li>重装v0.5版本的Pangolin</li>
+<li>在/include/System.h中加入#include &lt;unistd.h&gt;</li>
+
+</ul>
+</li>
+<li><p>如需在ROS环境下运行ORB_SLAM2</p>
+<ul>
+<li>chmod +x build_ros.sh</li>
+<li>在~/.bashrc中加入：
+export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:~/git/ORB_SLAM2/Examples/ROS/
+再运行./build_ros.sh</li>
+<li>报rospkg相关错误：sudo pip3 install rospkg</li>
+<li>报boost库相关错误：Examples/ROS/ORB_SLAM2中的CMakeLists.txt的set(LIBS...)末尾加入-lboost_system</li>
+
+</ul>
+</li>
+<li><p>运行单目示例</p>
+<ul>
+<li>./Examples/Monocular/mono_tum Vocabulary/ORBvoc.txt Examples/Monocular/TUM1.yaml Data/rgbd_dataset_freiburg1_desk</li>
+<li>即readme中提到的：
+/Examples/Monocular/mono_tum Vocabulary/ORBvoc.txt Examples/Monocular/TUMX.yaml PATH_TO_SEQUENCE_FOLDER</li>
+<li>sequence从<a href='https://vision.in.tum.de/data/datasets/rgbd-dataset/download' target='_blank' class='url'>https://vision.in.tum.de/data/datasets/rgbd-dataset/download</a>中下载</li>
+
+</ul>
+</li>
+<li><p>运行数据预处理associate</p>
+<ul>
+<li>在<a href='https://vision.in.tum.de/data/datasets/rgbd-dataset/tools' target='_blank' class='url'>https://vision.in.tum.de/data/datasets/rgbd-dataset/tools</a>中，选择associate.py；详细地址为<a href='https://svncvpr.in.tum.de/cvpr-ros-pkg/trunk/rgbd_benchmark/rgbd_benchmark_tools/src/rgbd_benchmark_tools/associate.py' target='_blank' class='url'>https://svncvpr.in.tum.de/cvpr-ros-pkg/trunk/rgbd_benchmark/rgbd_benchmark_tools/src/rgbd_benchmark_tools/associate.py</a>。</li>
+<li>python2 associate.py rgb.txt depth.txt &gt; associate.txt</li>
+<li>python2 associate.py associate.txt groundtruth.txt &gt; associate_with_groundtruth.txt</li>
+
+</ul>
+</li>
+<li><p>变量命名规范（前缀）</p>
+<ul>
+<li>m	类的成员变量</li>
+<li>p	指针</li>
+<li>b	布尔型</li>
+<li>v	向量</li>
+<li>t	线程</li>
+<li>l	列表</li>
+
+</ul>
+</li>
+
+</ol>
+</body>
+</html>

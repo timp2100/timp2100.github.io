@@ -1,0 +1,50 @@
+---
+layout: post
+title:  tips uname
+date:   2022-05-17 18:02:00 +0800
+permalink: /tips_uname
+categories: tips
+---
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>2022-05-17-tips_uname</title>
+</head>
+<body><ol>
+<li>查看已安装的内核版本</li>
+
+</ol>
+<pre><code class='language-shell' lang='shell'>dpkg --get-selections | grep linux
+dpkg --get-selections | grep linux-image
+</code></pre>
+<ol start='2' >
+<li>查看正在使用的内核版本</li>
+
+</ol>
+<pre><code class='language-shell' lang='shell'>uname -a
+</code></pre>
+<ol start='3' >
+<li>删除不用的内核版本</li>
+
+</ol>
+<pre><code class='language-shell' lang='shell'>sudo apt-get purge linux-image-5.4.0-84-generic
+sudo apt-get purge linux-headers-5.4.0-84-generic
+sudo apt-get purge linux-hwe-5.4-headers-5.4.0-84
+sudo apt-get purge linux-modules-5.4.0-84-generic
+</code></pre>
+<ol start='4' >
+<li>禁用内核更新</li>
+
+</ol>
+<pre><code class='language-shell' lang='shell'>sudo apt-mark hold linux-image-generic linux-headers-generic
+</code></pre>
+<ol start='5' >
+<li>（启用内核更新）</li>
+
+</ol>
+<pre><code class='language-shell' lang='shell'>sudo apt-mark unhold linux-image-generic linux-headers-generic
+</code></pre>
+<p>&nbsp;</p>
+</body>
+</html>
